@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\InvitationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,10 @@ Route::post('/orders/metatah', [OrderController::class, 'storeMetatah']);
 // Products (Public)
 Route::get('/products', [ProductController::class, 'indexPublic']);
 
+// RSVP (Public)
+Route::post('/rsvp', [AttendanceController::class, 'store']);
+Route::get('/attendance/{slug}', [AttendanceController::class, 'showBySlug']);
+
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
@@ -37,4 +43,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/products', [ProductController::class, 'store']);
     Route::put('/admin/products/{id}', [ProductController::class, 'update']);
     Route::delete('/admin/products/{id}', [ProductController::class, 'destroy']);
+
+    // Admin Attendance
+    Route::get('/admin/attendance', [AttendanceController::class, 'index']);
+
+    // Admin Invitations (Tokens)
+    Route::get('/admin/invitations', [InvitationController::class, 'index']);
+    Route::post('/admin/invitations', [InvitationController::class, 'store']);
+    Route::delete('/admin/invitations/{id}', [InvitationController::class, 'destroy']);
 });

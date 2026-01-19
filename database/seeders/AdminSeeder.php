@@ -12,9 +12,11 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        \App\Models\User::truncate(); // Clear existing to avoid unique constraint issues during development
         \App\Models\User::create([
             'name' => 'Admin Sinvitation',
-            'email' => 'admin@sinvitation.com', // Using email as username is standard in Laravel, but user said "username". I'll use name as well or just standard email.
+            'username' => 'admin',
+            'email' => 'admin@sinvitation.com',
             'password' => \Illuminate\Support\Facades\Hash::make('sinvitation2026'),
         ]);
         
