@@ -16,12 +16,22 @@ class InvitationController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'slug' => 'required|string|unique:invitations,slug',
             'nama_pengantin' => 'required|string',
         ]);
 
+        // Auto-generate slug dari nama pengantin
+        $baseSlug = Str::slug($validated['nama_pengantin']);
+        $slug = $baseSlug;
+        $counter = 1;
+
+        // Pastikan slug unik, jika sudah ada tambahkan angka di belakang
+        while (Invitation::where('slug', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter;
+            $counter++;
+        }
+
         $invitation = Invitation::create([
-            'slug' => $validated['slug'],
+            'slug' => $slug,
             'nama_pengantin' => $validated['nama_pengantin'],
             'api_key' => 'sv_' . Str::random(40),
         ]);
