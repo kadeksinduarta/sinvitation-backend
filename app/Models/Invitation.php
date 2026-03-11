@@ -12,10 +12,7 @@ class Invitation extends Model
     protected $fillable = [
         'slug',
         'api_key',
-        'client_name',
-        'nama_pria',
-        'nama_wanita',
-        'tanggal_acara'
+        'nama_pengantin',
     ];
 
     public function rsvps()

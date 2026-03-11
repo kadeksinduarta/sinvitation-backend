@@ -12,10 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('invitations', function (Blueprint $table) {
-            $table->string('nama_pria')->nullable();
-            $table->string('nama_wanita')->nullable();
-            $table->dateTime('tanggal_acara')->nullable();
-            // info tambahan lain bisa di tambahkan di text json atau lainnya
+            $table->renameColumn('client_name', 'nama_pengantin');
         });
     }
 
@@ -25,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('invitations', function (Blueprint $table) {
-            $table->dropColumn(['nama_pria', 'nama_wanita', 'tanggal_acara']);
+            $table->renameColumn('nama_pengantin', 'client_name');
         });
     }
 };

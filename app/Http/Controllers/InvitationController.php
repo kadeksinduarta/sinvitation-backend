@@ -17,12 +17,12 @@ class InvitationController extends Controller
     {
         $validated = $request->validate([
             'slug' => 'required|string|unique:invitations,slug',
-            'client_name' => 'required|string',
+            'nama_pengantin' => 'required|string',
         ]);
 
         $invitation = Invitation::create([
             'slug' => $validated['slug'],
-            'client_name' => $validated['client_name'],
+            'nama_pengantin' => $validated['nama_pengantin'],
             'api_key' => 'sv_' . Str::random(40),
         ]);
 
