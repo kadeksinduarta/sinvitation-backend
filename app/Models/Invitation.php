@@ -13,5 +13,13 @@ class Invitation extends Model
         'slug',
         'api_key',
         'client_name',
+        'nama_pria',
+        'nama_wanita',
+        'tanggal_acara'
     ];
+
+    public function rsvps()
+    {
+        return $this->hasMany(Rsvp::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\Api\RsvpController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,8 +27,8 @@ Route::post('/orders/metatah', [OrderController::class, 'storeMetatah']);
 Route::get('/products', [ProductController::class, 'indexPublic']);
 
 // RSVP (Public)
-Route::post('/rsvp', [AttendanceController::class, 'store']);
-Route::get('/attendance/{slug}', [AttendanceController::class, 'showBySlug']);
+Route::post('/rsvp', [RsvpController::class, 'store']);
+Route::get('/attendance/{slug}', [RsvpController::class, 'index']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -45,7 +46,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/admin/products/{id}', [ProductController::class, 'destroy']);
 
     // Admin Attendance
-    Route::get('/admin/attendance', [AttendanceController::class, 'index']);
+    Route::get('/admin/attendance', [RsvpController::class, 'index']);
 
     // Admin Invitations (Tokens)
     Route::get('/admin/invitations', [InvitationController::class, 'index']);
