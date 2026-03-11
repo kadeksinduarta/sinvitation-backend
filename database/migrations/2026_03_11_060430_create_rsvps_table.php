@@ -16,8 +16,7 @@ return new class extends Migration
             $table->foreignId('invitation_id')->constrained('invitations')->onDelete('cascade');
             $table->string('nama_tamu');
             $table->integer('jumlah_kehadiran')->default(1);
-            $table->string('status_kehadiran'); // hadir, tidak_hadir, ragu
-            $table->text('pesan')->nullable();
+            $table->string('status_kehadiran'); // hadir, tidak_hadir
             $table->timestamps();
         });
     }

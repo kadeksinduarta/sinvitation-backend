@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\Api\RsvpController;
 

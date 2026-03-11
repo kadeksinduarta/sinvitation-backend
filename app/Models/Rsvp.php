@@ -11,7 +11,6 @@ class Rsvp extends Model
         'nama_tamu',
         'jumlah_kehadiran',
         'status_kehadiran',
-        'pesan',
     ];
 
     public function invitation()

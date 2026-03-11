@@ -13,8 +13,7 @@ class RsvpController extends Controller
             'slug' => 'required|string',
             'nama_tamu' => 'required|string|max:255',
             'jumlah_kehadiran' => 'required|integer|min:1',
-            'status_kehadiran' => 'required|in:hadir,tidak_hadir,ragu',
-            'pesan' => 'nullable|string',
+            'status_kehadiran' => 'required|in:hadir,tidak_hadir',
         ]);
 
         $invitation = \App\Models\Invitation::where('slug', $request->slug)->first();
@@ -27,7 +26,6 @@ class RsvpController extends Controller
             'nama_tamu' => $request->nama_tamu,
             'jumlah_kehadiran' => $request->jumlah_kehadiran,
             'status_kehadiran' => $request->status_kehadiran,
-            'pesan' => $request->pesan,
         ]);
 
         return response()->json([
@@ -53,7 +51,6 @@ class RsvpController extends Controller
             'total' => $rsvps->count(),
             'hadir' => $rsvps->where('status_kehadiran', 'hadir')->sum('jumlah_kehadiran'),
             'tidak_hadir' => $rsvps->where('status_kehadiran', 'tidak_hadir')->count(),
-            'ragu' => $rsvps->where('status_kehadiran', 'ragu')->count(),
         ];
 
         return response()->json([
