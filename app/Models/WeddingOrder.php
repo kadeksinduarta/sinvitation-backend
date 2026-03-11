@@ -10,10 +10,13 @@ class WeddingOrder extends Model
     use HasFactory;
 
     protected $fillable = [
+        'tanggal',
         'nama_pemesan',
         'no_hp',
         'isi_foto',
         'link_template',
+        'susunan_nama_mempelai',
+        'agama',
         'link_drive_foto',
         'lagu',
         'catatan',
@@ -35,9 +38,12 @@ class WeddingOrder extends Model
         'waktu_resepsi',
         'alamat_resepsi',
         'link_lokasi_resepsi',
+        'amplop_digital',
+        'no_rek',
     ];
 
     protected $casts = [
         'isi_foto' => 'boolean',
+        'amplop_digital' => 'boolean',
     ];
 }

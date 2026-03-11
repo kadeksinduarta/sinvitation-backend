@@ -34,9 +34,36 @@ class RsvpController extends Controller
         ], 201);
     }
 
+    /**
+     * Get attendance by slug (public route with slug parameter)
+     */
+    public function getBySlug($slug)
+    {
+        $invitation = \App\Models\Invitation::where('slug', $slug)->first();
+
+        if (!$invitation) {
+            return response()->json(['message' => 'Undangan tidak ditemukan'], 404);
+        }
+
+        $rsvps = $invitation->rsvps()->orderBy('created_at', 'desc')->get();
+
+        $stats = [
+            'total' => $rsvps->count(),
+            'hadir' => $rsvps->where('status_kehadiran', 'hadir')->sum('jumlah_kehadiran'),
+            'tidak_hadir' => $rsvps->where('status_kehadiran', 'tidak_hadir')->count(),
+        ];
+
+        return response()->json([
+            'data' => $rsvps,
+            'stats' => $stats
+        ]);
+    }
+
+    /**
+     * Admin: Get all attendance data
+     */
     public function index(Request $request)
     {
-        // Admin or dashboard needs to view all rsvps, optionally filtered by invitation
         $query = \App\Models\Rsvp::with('invitation');
 
         if ($request->has('slug')) {

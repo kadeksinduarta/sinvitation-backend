@@ -27,7 +27,7 @@ Route::get('/products', [ProductController::class, 'indexPublic']);
 
 // RSVP (Public)
 Route::post('/rsvp', [RsvpController::class, 'store']);
-Route::get('/attendance/{slug}', [RsvpController::class, 'index']);
+Route::get('/attendance/{slug}', [RsvpController::class, 'getBySlug']);
 
 // Protected Routes
 Route::middleware('auth:sanctum')->group(function () {
@@ -37,6 +37,14 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin Orders
     Route::get('/admin/orders', [OrderController::class, 'index']);
     Route::patch('/admin/orders/{type}/{id}', [OrderController::class, 'updateStatus']);
+
+    // Admin individual order type endpoints
+    Route::get('/admin/orders/wedding', [OrderController::class, 'weddingOrders']);
+    Route::post('/admin/orders/wedding', [OrderController::class, 'storeWeddingAdmin']);
+    Route::get('/admin/orders/birthday', [OrderController::class, 'birthdayOrders']);
+    Route::post('/admin/orders/birthday', [OrderController::class, 'storeBirthdayAdmin']);
+    Route::get('/admin/orders/metatah', [OrderController::class, 'metatahOrders']);
+    Route::post('/admin/orders/metatah', [OrderController::class, 'storeMetatahAdmin']);
 
     // Admin Products
     Route::get('/admin/products', [ProductController::class, 'index']);

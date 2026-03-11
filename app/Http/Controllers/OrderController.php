@@ -141,6 +141,111 @@ class OrderController extends Controller
         ]);
     }
 
+    // Individual order type endpoints for admin
+    public function weddingOrders()
+    {
+        return response()->json(WeddingOrder::orderBy('created_at', 'desc')->get());
+    }
+
+    public function birthdayOrders()
+    {
+        return response()->json(BirthdayOrder::orderBy('created_at', 'desc')->get());
+    }
+
+    public function metatahOrders()
+    {
+        return response()->json(MetatahOrder::orderBy('created_at', 'desc')->get());
+    }
+
+    // Admin store methods (no bukti_tranfer required)
+    public function storeWeddingAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'nullable|date',
+            'isi_foto' => 'boolean',
+            'nama_pemesan' => 'required|string',
+            'link_template' => 'nullable|string',
+            'susunan_nama_mempelai' => 'nullable|string',
+            'agama' => 'nullable|string',
+            'nama_panggilan_wanita' => 'nullable|string',
+            'nama_lengkap_wanita' => 'nullable|string',
+            'nama_ortu_wanita' => 'nullable|string',
+            'ig_wanita' => 'nullable|string',
+            'nama_panggilan_pria' => 'nullable|string',
+            'nama_lengkap_pria' => 'nullable|string',
+            'nama_ortu_pria' => 'nullable|string',
+            'ig_pria' => 'nullable|string',
+            'tanggal_pernikahan' => 'nullable|date',
+            'waktu_pernikahan' => 'nullable|string',
+            'alamat_pernikahan' => 'nullable|string',
+            'link_lokasi_pernikahan' => 'nullable|string',
+            'tanggal_resepsi' => 'nullable|date',
+            'waktu_resepsi' => 'nullable|string',
+            'alamat_resepsi' => 'nullable|string',
+            'link_lokasi_resepsi' => 'nullable|string',
+            'amplop_digital' => 'boolean',
+            'no_rek' => 'nullable|string',
+            'link_drive_foto' => 'nullable|string',
+            'lagu' => 'nullable|string',
+        ]);
+
+        $order = WeddingOrder::create($validated);
+        return response()->json(['message' => 'Data wedding berhasil disimpan', 'order' => $order], 201);
+    }
+
+    public function storeBirthdayAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'tanggal' => 'nullable|date',
+            'isi_foto' => 'boolean',
+            'nama_pemesan' => 'required|string',
+            'link_template' => 'nullable|string',
+            'nama_yang_ulang_tahun' => 'nullable|string',
+            'ultah_ke' => 'nullable|string',
+            'tanggal_acara' => 'nullable|date',
+            'waktu_acara' => 'nullable|string',
+            'alamat_acara' => 'nullable|string',
+            'link_lokasi_acara' => 'nullable|string',
+            'link_drive_foto' => 'nullable|string',
+            'lagu' => 'nullable|string',
+        ]);
+
+        $order = BirthdayOrder::create($validated);
+        return response()->json(['message' => 'Data birthday berhasil disimpan', 'order' => $order], 201);
+    }
+
+    public function storeMetatahAdmin(Request $request)
+    {
+        $validated = $request->validate([
+            'nama_pemesan' => 'required|string',
+            'no_hp' => 'nullable|string',
+            'isi_foto' => 'boolean',
+            'link_template' => 'nullable|string',
+            'link_drive_foto' => 'nullable|string',
+            'lagu' => 'nullable|string',
+            'catatan' => 'nullable|string',
+            'detail_nama_ortu' => 'nullable|string',
+            'jumlah_peserta' => 'nullable|integer',
+            'data_peserta' => 'nullable',
+            'tanggal_acara' => 'nullable|date',
+            'waktu_acara' => 'nullable|string',
+            'alamat_acara' => 'nullable|string',
+            'link_lokasi_acara' => 'nullable|string',
+            'tanggal_resepsi' => 'nullable|date',
+            'waktu_resepsi' => 'nullable|string',
+            'alamat_resepsi' => 'nullable|string',
+            'link_lokasi_resepsi' => 'nullable|string',
+        ]);
+
+        // Handle data_peserta
+        if (isset($validated['data_peserta']) && is_string($validated['data_peserta'])) {
+            $validated['data_peserta'] = json_decode($validated['data_peserta'], true);
+        }
+
+        $order = MetatahOrder::create($validated);
+        return response()->json(['message' => 'Data metatah berhasil disimpan', 'order' => $order], 201);
+    }
+
     public function updateStatus(Request $request, $type, $id)
     {
         $request->validate(['status' => 'required|in:pending,processed,completed']);
