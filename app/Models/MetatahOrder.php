@@ -20,6 +20,7 @@ class MetatahOrder extends Model
         'bukti_tranfer',
         'status',
         'detail_nama_ortu',
+        'data_ortu',
         'jumlah_peserta',
         'data_peserta',
         'tanggal_acara',
@@ -35,5 +36,6 @@ class MetatahOrder extends Model
     protected $casts = [
         'isi_foto' => 'boolean',
         'data_peserta' => 'array',
+        'data_ortu' => 'array',
     ];
 }

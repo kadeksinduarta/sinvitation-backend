@@ -97,7 +97,8 @@ class OrderController extends Controller
             'bukti_tranfer' => 'required|image|max:2048',
 
             // Metatah Specific
-            'detail_nama_ortu' => 'required|string',
+            'detail_nama_ortu' => 'nullable|string',
+            'data_ortu' => 'required|string', // JSON string from frontend
             'jumlah_peserta' => 'required|integer',
             
             // Allow array input for participant data
@@ -121,6 +122,9 @@ class OrderController extends Controller
 
         // Decode JSON data_peserta if sent as string from FormData
         $validated['data_peserta'] = json_decode($validated['data_peserta'], true);
+        if (isset($validated['data_ortu'])) {
+            $validated['data_ortu'] = json_decode($validated['data_ortu'], true);
+        }
 
         $order = MetatahOrder::create($validated);
         return response()->json(['message' => 'Order submitted successfully', 'order' => $order], 201);
@@ -225,6 +229,7 @@ class OrderController extends Controller
             'lagu' => 'nullable|string',
             'catatan' => 'nullable|string',
             'detail_nama_ortu' => 'nullable|string',
+            'data_ortu' => 'nullable',
             'jumlah_peserta' => 'nullable|integer',
             'data_peserta' => 'nullable',
             'tanggal_acara' => 'nullable|date',
@@ -240,6 +245,9 @@ class OrderController extends Controller
         // Handle data_peserta
         if (isset($validated['data_peserta']) && is_string($validated['data_peserta'])) {
             $validated['data_peserta'] = json_decode($validated['data_peserta'], true);
+        }
+        if (isset($validated['data_ortu']) && is_string($validated['data_ortu'])) {
+            $validated['data_ortu'] = json_decode($validated['data_ortu'], true);
         }
 
         $order = MetatahOrder::create($validated);
