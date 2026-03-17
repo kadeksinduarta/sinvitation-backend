@@ -273,4 +273,60 @@ class OrderController extends Controller
 
         return response()->json(['message' => 'Status updated', 'order' => $order]);
     }
+
+    /**
+     * Admin: Update an order (generic for all types)
+     */
+    public function updateOrder(Request $request, $type, $id)
+    {
+        $modelMap = [
+            'wedding' => WeddingOrder::class,
+            'birthday' => BirthdayOrder::class,
+            'metatah' => MetatahOrder::class,
+        ];
+
+        if (!isset($modelMap[$type])) {
+            return response()->json(['error' => 'Invalid order type'], 400);
+        }
+
+        $order = $modelMap[$type]::findOrFail($id);
+
+        // Get all fillable fields from the request
+        $data = $request->all();
+
+        // Handle JSON fields for metatah
+        if ($type === 'metatah') {
+            if (isset($data['data_peserta']) && is_string($data['data_peserta'])) {
+                $data['data_peserta'] = json_decode($data['data_peserta'], true);
+            }
+            if (isset($data['data_ortu']) && is_string($data['data_ortu'])) {
+                $data['data_ortu'] = json_decode($data['data_ortu'], true);
+            }
+        }
+
+        $order->update($data);
+
+        return response()->json(['message' => 'Data berhasil diperbarui', 'order' => $order]);
+    }
+
+    /**
+     * Admin: Delete an order
+     */
+    public function destroyOrder($type, $id)
+    {
+        $modelMap = [
+            'wedding' => WeddingOrder::class,
+            'birthday' => BirthdayOrder::class,
+            'metatah' => MetatahOrder::class,
+        ];
+
+        if (!isset($modelMap[$type])) {
+            return response()->json(['error' => 'Invalid order type'], 400);
+        }
+
+        $order = $modelMap[$type]::findOrFail($id);
+        $order->delete();
+
+        return response()->json(['message' => 'Data berhasil dihapus']);
+    }
 }

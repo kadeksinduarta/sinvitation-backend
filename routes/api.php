@@ -37,6 +37,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // Admin Orders
     Route::get('/admin/orders', [OrderController::class, 'index']);
     Route::patch('/admin/orders/{type}/{id}', [OrderController::class, 'updateStatus']);
+    Route::put('/admin/orders/{type}/{id}', [OrderController::class, 'updateOrder']);
+    Route::delete('/admin/orders/{type}/{id}', [OrderController::class, 'destroyOrder']);
 
     // Admin individual order type endpoints
     Route::get('/admin/orders/wedding', [OrderController::class, 'weddingOrders']);
@@ -54,6 +56,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Admin Attendance
     Route::get('/admin/attendance', [RsvpController::class, 'index']);
+    Route::put('/admin/attendance/{id}', [RsvpController::class, 'update']);
+    Route::delete('/admin/attendance/{id}', [RsvpController::class, 'destroy']);
 
     // Admin Invitations (Tokens)
     Route::get('/admin/invitations', [InvitationController::class, 'index']);

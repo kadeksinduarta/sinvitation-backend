@@ -85,4 +85,38 @@ class RsvpController extends Controller
             'stats' => $stats
         ]);
     }
+
+    /**
+     * Admin: Update RSVP entry
+     */
+    public function update(Request $request, $id)
+    {
+        $rsvp = \App\Models\Rsvp::findOrFail($id);
+
+        $validated = $request->validate([
+            'nama_tamu' => 'required|string|max:255',
+            'jumlah_kehadiran' => 'required|integer|min:1',
+            'status_kehadiran' => 'required|in:hadir,tidak_hadir',
+        ]);
+
+        $rsvp->update($validated);
+
+        return response()->json([
+            'message' => 'Data RSVP berhasil diperbarui',
+            'data' => $rsvp
+        ]);
+    }
+
+    /**
+     * Admin: Delete RSVP entry
+     */
+    public function destroy($id)
+    {
+        $rsvp = \App\Models\Rsvp::findOrFail($id);
+        $rsvp->delete();
+
+        return response()->json([
+            'message' => 'Data RSVP berhasil dihapus'
+        ]);
+    }
 }
